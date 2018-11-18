@@ -1,7 +1,7 @@
 class ChordNode
 	attr_reader :nodelist
 
-	def initialize(bit_amount: 8)
+	def initialize(bit_amount: 3)
 		@bit_amount = bit_amount
 		@nodelist = []
 	end
@@ -58,7 +58,7 @@ class ChordNode
             end                   
     	end
     	@nodelist.push(node)
-		for i in (1..@bit_amount + 1)
+		for i in (1..@bit_amount)
             start = (node.nodeid + 2 ** (i - 1)) % (2 ** @bit_amount)
 			node.fingertable[start] = @nodelist[0]
 			for nd in @nodelist
@@ -81,8 +81,8 @@ class ChordNode
 	    if node != nil
 	        node.successor.precessor = node.precessor
 	        node.precessor.successor = node.successor
-	        @node_list = @nodelist - [node]
-	        for i in (1..@bit_amount + 1)
+	        @node_list = @nodelist.delete(node)
+	        for i in (1..@bit_amount+1)
 	            start = (node.precessor.nodeid + 2 ** (i - 1)) % (2 ** @bit_amount)
 	            node.precessor.fingertable[start] = @nodelist[0]
 				for nd in @nodelist

@@ -3,7 +3,7 @@ class Node:
         self.precessor = self
         self.node_id = node_id
         self.finger_table = {}
-        self.bit_count = 8
+        self.bit_count = 3
         for i in range(1, self.bit_count + 1):
             self.finger_table[(node_id + 2 ** (i - 1)) % (2 ** self.bit_count)] = None
         self.successor = self
@@ -29,7 +29,7 @@ class Node:
 class ChordNode:
     def __init__(self):
         self.node_list = []
-        self.bit_count = 8
+        self.bit_count = 3
         pass
 
     def get_first_node(self):
@@ -84,15 +84,15 @@ class ChordNode:
                 node.precessor.finger_table[start] = next((x for x in self.node_list if x.node_id >= start),
                                                           self.node_list[0])
 
-bit_count = 8
+bit_count = 3
 
 if __name__ == '__main__':
     ChordNode = ChordNode()
     ChordNode.add_node(Node(1))
     ChordNode.add_node(Node(3))
-    # ChordNode.add_node(Node(5))
-    # ChordNode.add_node(Node(4))
-    # ChordNode.add_node(Node(6))
+    #ChordNode.add_node(Node(5))
+    #ChordNode.add_node(Node(4))
+    #hordNode.add_node(Node(6))
     #ChordNode.remove_node(3)
     for node in ChordNode.node_list:
         print(node)

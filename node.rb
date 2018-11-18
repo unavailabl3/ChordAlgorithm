@@ -4,13 +4,13 @@ class Node
 	attr_reader :successor
 	attr_reader :fingertable
 
-	def initialize(id: 1, bit_amount: 8)
+	def initialize(id: 1, bit_amount: 3)
 		@precessor = self
 		@successor = self
 		@nodeid = id
 		@fingertable = {}
 		@bit_amount = bit_amount
-		(1..@bit_amount+1).each{ |i|
+		(1..@bit_amount).each{ |i|
 			@fingertable[(@nodeid + 2 ** (i - 1)) % (2 ** @bit_amount)] = nil
 		}
 	end
@@ -29,11 +29,11 @@ class Node
         @fingertable[firstkey] = value
     end
 
-    def to_s
-        return "NodeId : #{@nodeid}, FingerTable : #{@fingertable}"
+    def printFingerTable
+        return "NodeId : #{@nodeid},Precessor:#{@precessor.nodeid}, Successor:#{@successor.nodeid}, FingerTable : #{JSON.generate(@fingertable)}"
     end
 
-    def repr
-        return "ChordNode with id: #{@nodeid}"		
+    def to_s
+        return "ChordNode with id=#{@nodeid}"		
     end
 end
