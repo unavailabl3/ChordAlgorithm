@@ -5,7 +5,7 @@ class ChordNode
 		@bit_amount = bit_amount
 		@nodelist = []
 	end
-#CHANGE DEF NAMES
+
 	def get_first_node
         return (@nodelist.sort_by {|node| node.nodeid})[0] if (@nodelist.size > 0)
     	return nil
@@ -14,6 +14,20 @@ class ChordNode
 	def get_last_node
         return (@nodelist.sort_by {|node| node.nodeid})[-1] if (@nodelist.size > 0)
     	return nil
+    end
+
+    def stabilize
+    	for nd in @nodelist
+    		for key in nd.fingertable.keys
+    			for next_nd in @nodelist
+    				if next_nd.nodeid >= key
+    					nd.fingertable[key] = next_nd
+    					break
+    				end
+    				nd.fingertable[key] = @nodelist[0]
+    			end
+    		end
+    	end
     end
 
     def add_node(node: nil)
@@ -32,13 +46,15 @@ class ChordNode
     		end
     		if next_node == nil
                 next_node = self.get_first_node()
-            else
+            end
+            if next_node != nil
                 node.successor = next_node
-                next_node.precessor = node
+
+            	next_node.precessor = node
             end
 
             prev_node = nil
-			for nd in @nodelist
+			for nd in @nodelist.reverse
     			if nd.nodeid < node.nodeid
     				prev_node = nd
     				break
@@ -50,15 +66,9 @@ class ChordNode
                 node.precessor = prev_node
                 prev_node.successor = node
             end
-
-			for finger_table_key in node.precessor.fingertable.keys
-                if finger_table_key <= node.nodeid
-                    node.precessor.fingertable[finger_table_key] = node
-                end  
-            end                   
     	end
     	@nodelist.push(node)
-		for i in (1..@bit_amount)
+		for i in (1..@bit_amount+1)
             start = (node.nodeid + 2 ** (i - 1)) % (2 ** @bit_amount)
 			node.fingertable[start] = @nodelist[0]
 			for nd in @nodelist
@@ -68,6 +78,7 @@ class ChordNode
     			end
     		end
         end
+        self.stabilize()
     end
 
     def remove_node(id: nil)
@@ -93,5 +104,6 @@ class ChordNode
     			end
     		end
     	end
+    	self.stabilize()
     end
 end

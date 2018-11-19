@@ -88,9 +88,9 @@ bit_count = 3
 
 if __name__ == '__main__':
     ChordNode = ChordNode()
+    ChordNode.add_node(Node(0))
     ChordNode.add_node(Node(1))
     ChordNode.add_node(Node(3))
-    #ChordNode.add_node(Node(5))
     #ChordNode.add_node(Node(4))
     #hordNode.add_node(Node(6))
     #ChordNode.remove_node(3)
